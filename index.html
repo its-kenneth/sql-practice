@@ -3,14 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interactive SQL Exercise Generator</title>
+<title>Daily SQL</title>
 <style>
   body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
   h1 { text-align: center; }
   .exercise { margin-bottom: 25px; padding: 15px; background: #fff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
   .context { background: #f1f1f1; padding: 10px; border-radius: 5px; margin-bottom: 10px; font-family: monospace; white-space: pre-wrap;}
   .query-box { width: 100%; min-height: 40px; padding: 8px; font-family: monospace; font-size: 14px; resize: none; border: 1px solid #ccc; border-radius: 5px; }
-  .answer { display: none; color: green; margin-top: 10px; white-space: pre-wrap; }
+  .answer { 
+    display: none; 
+    color: green; 
+    margin-top: 10px; 
+    white-space: pre-wrap; /* wrap long lines */
+    word-break: break-word; /* break very long words/queries */
+  }
   button { margin-top: 10px; padding: 6px 10px; border: none; border-radius: 5px; background: #007bff; color: white; cursor: pointer; }
   button:hover { background: #0056b3; }
 </style>
