@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interactive SQL Exercise Generator</title>
+<title>Daily SQL Practices</title>
 <style>
   body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
   h1 { text-align: center; }
@@ -22,11 +22,12 @@
 
 <div style="text-align:center;">
   <button onclick="generateExercises()">Refresh Exercises</button>
-  <button onclick="showAnswers()">Show Answers</button>
+  <button id="toggleAnswerBtn" onclick="toggleAnswers()">Show Answers</button>
 </div>
 
 <script>
 let exercises = [];
+let answersVisible = false;
 
 // Load exercises from JSON
 async function loadExercises() {
@@ -55,8 +56,10 @@ function autoResizeTextarea(textarea) {
 function generateExercises() {
   const container = document.getElementById('exercises');
   container.innerHTML = '';
-  const selected = getRandomExercises(3);
+  answersVisible = false;
+  document.getElementById('toggleAnswerBtn').innerText = 'Show Answers';
 
+  const selected = getRandomExercises(3);
   selected.forEach((ex, index) => {
     const div = document.createElement('div');
     div.className = 'exercise';
@@ -69,9 +72,12 @@ function generateExercises() {
   });
 }
 
-// Show answers
-function showAnswers() {
-  document.querySelectorAll('.answer').forEach(ans => ans.style.display = 'block');
+// Toggle show/hide answers
+function toggleAnswers() {
+  const answers = document.querySelectorAll('.answer');
+  answersVisible = !answersVisible;
+  answers.forEach(ans => ans.style.display = answersVisible ? 'block' : 'none');
+  document.getElementById('toggleAnswerBtn').innerText = answersVisible ? 'Hide Answers' : 'Show Answers';
 }
 
 // Initial load
