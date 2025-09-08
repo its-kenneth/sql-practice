@@ -3,14 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily SQL Practices</title>
+<title>Interactive SQL Exercise Generator</title>
 <style>
   body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
   h1 { text-align: center; }
   .exercise { margin-bottom: 25px; padding: 15px; background: #fff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+  .context { background: #f1f1f1; padding: 10px; border-radius: 5px; margin-bottom: 10px; font-family: monospace; white-space: pre-wrap;}
   .query-box { width: 100%; min-height: 40px; padding: 8px; font-family: monospace; font-size: 14px; resize: none; border: 1px solid #ccc; border-radius: 5px; }
   .answer { display: none; color: green; margin-top: 10px; white-space: pre-wrap; }
-  button { margin-right: 10px; margin-top: 10px; padding: 8px 12px; border: none; border-radius: 5px; background: #007bff; color: white; cursor: pointer; }
+  button { margin-top: 10px; padding: 6px 10px; border: none; border-radius: 5px; background: #007bff; color: white; cursor: pointer; }
   button:hover { background: #0056b3; }
 </style>
 </head>
@@ -20,14 +21,12 @@
 
 <div id="exercises"></div>
 
-<div style="text-align:center;">
+<div style="text-align:center; margin-top: 20px;">
   <button onclick="generateExercises()">Refresh Exercises</button>
-  <button id="toggleAnswerBtn" onclick="toggleAnswers()">Show Answers</button>
 </div>
 
 <script>
 let exercises = [];
-let answersVisible = false;
 
 // Load exercises from JSON
 async function loadExercises() {
@@ -56,28 +55,32 @@ function autoResizeTextarea(textarea) {
 function generateExercises() {
   const container = document.getElementById('exercises');
   container.innerHTML = '';
-  answersVisible = false;
-  document.getElementById('toggleAnswerBtn').innerText = 'Show Answers';
 
   const selected = getRandomExercises(3);
   selected.forEach((ex, index) => {
     const div = document.createElement('div');
     div.className = 'exercise';
     div.innerHTML = `
-      <strong>Exercise ${index + 1}:</strong> ${ex.question}<br>
-      <textarea class="query-box" placeholder="Type your SQL query here..." oninput="autoResizeTextarea(this)"></textarea>
+      <div class="context"><strong>Context:</strong>\n${ex.context}</div>
+      <strong>Exercise ${index + 1}:</strong> ${ex.prompt}<br>
+      <textarea class="query-box" placeholder="Type your SQL query here..." oninput="autoResizeTextarea(this)"></textarea><br>
+      <button onclick="toggleAnswer(this)">Show Answer</button>
       <div class="answer"><pre>${ex.answer}</pre></div>
     `;
     container.appendChild(div);
   });
 }
 
-// Toggle show/hide answers
-function toggleAnswers() {
-  const answers = document.querySelectorAll('.answer');
-  answersVisible = !answersVisible;
-  answers.forEach(ans => ans.style.display = answersVisible ? 'block' : 'none');
-  document.getElementById('toggleAnswerBtn').innerText = answersVisible ? 'Hide Answers' : 'Show Answers';
+// Toggle show/hide answer for a single exercise
+function toggleAnswer(button) {
+  const answerDiv = button.nextElementSibling;
+  if (answerDiv.style.display === 'block') {
+    answerDiv.style.display = 'none';
+    button.innerText = 'Show Answer';
+  } else {
+    answerDiv.style.display = 'block';
+    button.innerText = 'Hide Answer';
+  }
 }
 
 // Initial load
